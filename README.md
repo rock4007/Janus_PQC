@@ -85,6 +85,11 @@ jobs:
 ## Regional Deployment (UK, Ireland, EU)
 - See [docs/DEPLOY_EU.md](docs/DEPLOY_EU.md) for step-by-step commands for AWS (eu-west-1/eu-west-2/eu-central-1), Azure (westeurope/northeurope/uksouth), and GCP (europe-west*).
 
+## Project Separation
+- Janus_PQC is independent and not affiliated with any other project.
+- Do not mix code, configurations, or releases with Crypto-Shield.
+- This repository stands alone for PQC verification work.
+
 ## License
 - Proprietary — All Rights Reserved. See [LICENSE](LICENSE).
 - Usage is subject to the [Acceptable Use Policy](ACCEPTABLE_USE_POLICY.md).
