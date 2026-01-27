@@ -82,6 +82,9 @@ jobs:
 - EU (GDPR/NIS2), USA (FIPS 140-3/NIST/FedRAMP), Canada (PIPEDA/CyberSecure), Australia (ASD Essential Eight/ISM).
 - Details and guidance in [docs/REGIONAL_READINESS.md](docs/REGIONAL_READINESS.md).
 
+## Regional Deployment (UK, Ireland, EU)
+- See [docs/DEPLOY_EU.md](docs/DEPLOY_EU.md) for step-by-step commands for AWS (eu-west-1/eu-west-2/eu-central-1), Azure (westeurope/northeurope/uksouth), and GCP (europe-west*).
+
 ## License
 - Proprietary — All Rights Reserved. See [LICENSE](LICENSE).
 - Usage is subject to the [Acceptable Use Policy](ACCEPTABLE_USE_POLICY.md).
