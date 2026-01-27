@@ -1,0 +1,54 @@
+name: release
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  build-sign-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dev deps
+        run: python -m pip install -r requirements-dev.txt
+      - name: Generate SBOM
+        run: python tools/generate_sbom.py
+      - name: Generate checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(README.md LICENSE SECURITY_POLICY.md ACCEPTABLE_USE_POLICY.md requirements.txt requirements-dev.txt Janus_PQC janus_core.py janus_cli.py)
+          while IFS= read -r -d '' f; do files+=("$f"); done < <(find docs tests -type f -print0)
+          sha256sum "${files[@]}" > checksums.txt
+      - name: Package source
+        run: zip -r "janus-pqc-${{ github.ref_name }}.zip" .
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3
+        with:
+          cosign-release: 'v2.2.4'
+      - name: Sign SBOM (keyless)
+        env:
+          COSIGN_EXPERIMENTAL: "1"
+        run: |
+          cosign sign-blob --yes sbom.json --output-signature sbom.sig --output-certificate sbom.pem
+      - name: Sign checksums (keyless)
+        env:
+          COSIGN_EXPERIMENTAL: "1"
+        run: |
+          cosign sign-blob --yes checksums.txt --output-signature checksums.sig --output-certificate checksums.pem
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            sbom.json
+            sbom.sig
+            sbom.pem
+            checksums.txt
+            checksums.sig
+            checksums.pem
+            janus-pqc-${{ github.ref_name }}.zip
