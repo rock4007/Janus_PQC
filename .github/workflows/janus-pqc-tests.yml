@@ -48,16 +48,12 @@ jobs:
           format: cyclonedx-json
           output-file: sbom.json
           fail-on-error: false
-      - name: Verify SBOM file exists
-        run: |
-          ls -lah
-          test -f sbom.json
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v4
+        if: ${{ hashFiles('sbom.json') != '' }}
         with:
           name: cyclonedx-sbom
-          path: |
-            sbom.json
+          path: sbom.json
       - name: Upload dependency SBOM artifact (if exists)
         if: ${{ hashFiles('sbom_deps.json') != '' }}
         uses: actions/upload-artifact@v4

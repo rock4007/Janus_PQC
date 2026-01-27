@@ -1,2 +1,2 @@
-bandit==1.7.6
-cyclonedx-bom==4.1.2
+bandit==1.9.3
+pip-audit==2.10.0
