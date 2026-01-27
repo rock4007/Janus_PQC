@@ -90,6 +90,9 @@ jobs:
 - Do not mix code, configurations, or releases with Crypto-Shield.
 - This repository stands alone for PQC verification work.
 
+## Global Deployment
+- Worldwide guidance for AWS, Azure, and GCP in [docs/DEPLOY_GLOBAL.md](docs/DEPLOY_GLOBAL.md), including US, Canada, APAC, and EU regions.
+
 ## License
 - Proprietary — All Rights Reserved. See [LICENSE](LICENSE).
 - Usage is subject to the [Acceptable Use Policy](ACCEPTABLE_USE_POLICY.md).
