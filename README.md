@@ -78,6 +78,10 @@ jobs:
 - For government use, operate only with FIPS 140-3 validated crypto modules and approved algorithms in FIPS mode.
 - SBOM and CI checks available; see [docs/COMPLIANCE.md](docs/COMPLIANCE.md) and [SECURITY_POLICY.md](SECURITY_POLICY.md).
 
+## Regional Readiness
+- EU (GDPR/NIS2), USA (FIPS 140-3/NIST/FedRAMP), Canada (PIPEDA/CyberSecure), Australia (ASD Essential Eight/ISM).
+- Details and guidance in [docs/REGIONAL_READINESS.md](docs/REGIONAL_READINESS.md).
+
 ## License
 - Proprietary — All Rights Reserved. See [LICENSE](LICENSE).
 - Usage is subject to the [Acceptable Use Policy](ACCEPTABLE_USE_POLICY.md).

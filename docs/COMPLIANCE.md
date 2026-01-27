@@ -24,5 +24,13 @@ This project provides a prototype for dual-layer signature verification aligned 
 - **Test Evidence:** Black-box success and tamper-detection runs.
 - **Policy Docs:** Security policy and support contact.
 
+## Jurisdiction Summary
+- **EU:** GDPR, NIS2, ENISA crypto guidance. Use EU data residency when required.
+- **USA:** FIPS 140-3 for government; NIST SP 800-53/63; FedRAMP for cloud services.
+- **Canada:** PIPEDA, CyberSecure Canada/ITSG-33; data sovereignty considerations.
+- **Australia:** ASD Essential Eight/ISM; Privacy Act; sovereign hosting.
+
+See [REGIONAL_READINESS.md](REGIONAL_READINESS.md) for details.
+
 ## Disclaimer
 This repository is a reference implementation. Government or regulated deployments must undergo formal accreditation and operate only with FIPS-validated cryptographic modules.
