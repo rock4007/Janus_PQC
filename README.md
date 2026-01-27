@@ -1,4 +1,4 @@
-# Janus_PQC
+# Janus_PQC [![CI](https://github.com/rock4007/Janus_PQC/actions/workflows/janus-pqc-tests.yml/badge.svg)](https://github.com/rock4007/Janus_PQC/actions/workflows/janus-pqc-tests.yml)
 
 The transition to "Cloud 3.0" and the "Year of Truth for AI" requires data integrity that can survive early quantum decryption attempts.
 
