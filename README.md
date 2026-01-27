@@ -90,3 +90,13 @@ jobs:
     - `git tag -a v0.1.0 -m "Initial release"`
     - `git push origin v0.1.0`
   - The workflow in [.github/workflows/release.yml](.github/workflows/release.yml) will build and attach artifacts.
+
+## Real-World Validation
+- Environment: Windows 11, Python 3.14.2.
+- Runtime output (local execution):
+  ```
+  [NOTICE] Use restricted. See LICENSE and ACCEPTABLE_USE_POLICY.md.
+  [SUCCESS] Data Integrity Verified: System is Quantum-Safe and Uncompromisable.
+  ```
+- Tests: `All Janus_PQC black-box tests passed.`
+- SBOM: Generated in CI for releases; local generation via `requirements-dev.txt` and `tools/generate_sbom.py`.
