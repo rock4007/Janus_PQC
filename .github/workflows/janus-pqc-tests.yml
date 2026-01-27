@@ -36,6 +36,7 @@ jobs:
         run: bandit -r . -q || true
       - name: Generate SBOM (CycloneDX JSON)
         uses: anchore/sbom-action@v0.15.5
+        continue-on-error: true
         with:
           path: .
           format: cyclonedx-json
@@ -43,6 +44,7 @@ jobs:
           fail-on-error: false
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         if: ${{ hashFiles('sbom.json') != '' }}
         with:
           name: cyclonedx-sbom
@@ -50,6 +52,7 @@ jobs:
       - name: Upload dependency SBOM artifact (if exists)
         if: ${{ hashFiles('sbom_deps.json') != '' }}
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: cyclonedx-sbom-deps
           path: sbom_deps.json
