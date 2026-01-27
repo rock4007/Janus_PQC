@@ -38,7 +38,7 @@ jobs:
       - name: Run pip-audit (non-blocking)
         continue-on-error: true
         run: |
-          pip-audit --progress-spinner off --desc --strict -f cyclonedx-json -o sbom_deps.json
+          pip-audit --progress-spinner off --format cyclonedx --output sbom_deps.json || true
       - name: Bandit static analysis
         run: bandit -r . -q || true
       - name: Generate SBOM (CycloneDX JSON)
@@ -58,4 +58,9 @@ jobs:
           name: cyclonedx-sbom
           path: |
             sbom.json
-            sbom_deps.json
+      - name: Upload dependency SBOM artifact (if exists)
+        if: ${{ hashFiles('sbom_deps.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cyclonedx-sbom-deps
+          path: sbom_deps.json
