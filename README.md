@@ -105,6 +105,8 @@ jobs:
 
 ## Global Deployment
 - Worldwide guidance for AWS, Azure, and GCP in [docs/DEPLOY_GLOBAL.md](docs/DEPLOY_GLOBAL.md), including US, Canada, APAC, and EU regions.
+ - Linux server setup in [docs/DEPLOY_LINUX.md](docs/DEPLOY_LINUX.md).
+ - iOS client implementation guidance in [docs/DEPLOY_IOS.md](docs/DEPLOY_IOS.md).
 
 ## Deploy via GitHub Actions
 - Use the manual workflow in [.github/workflows/deploy.yml](.github/workflows/deploy.yml): choose `provider` (aws|azure|gcp), `region`, and `image_name`.
