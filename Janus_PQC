@@ -202,6 +202,8 @@ if __name__ == "__main__":
     # 3. Verify the data
     is_secure = security.verify_integrity(global_payload, envelope, signature_1, signature_2, c_pub, pq_pub)
 
+    print("[NOTICE] Use restricted. See LICENSE and ACCEPTABLE_USE_POLICY.md.")
+
     if is_secure:
         print("[SUCCESS] Data Integrity Verified: System is Quantum-Safe and Uncompromisable.")
     else:
