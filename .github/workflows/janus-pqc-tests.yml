@@ -27,8 +27,14 @@ jobs:
       - name: Generate SBOM (CycloneDX JSON)
         uses: anchore/sbom-action@v0
         with:
+          path: .
           format: cyclonedx-json
           output-file: sbom.json
+          fail-on-error: false
+      - name: Verify SBOM file exists
+        run: |
+          ls -lah
+          test -f sbom.json
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v4
         with:
