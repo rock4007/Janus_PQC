@@ -81,3 +81,12 @@ jobs:
 ## License
 - Proprietary — All Rights Reserved. See [LICENSE](LICENSE).
 - Usage is subject to the [Acceptable Use Policy](ACCEPTABLE_USE_POLICY.md).
+
+## Releases
+- Tagged releases (`v*`) publish signed artifacts via GitHub Actions.
+- Artifacts include: `sbom.json` (signed), `checksums.txt` (signed), and a source zip.
+- How to create a release:
+  - Tag locally and push:
+    - `git tag -a v0.1.0 -m "Initial release"`
+    - `git push origin v0.1.0`
+  - The workflow in [.github/workflows/release.yml](.github/workflows/release.yml) will build and attach artifacts.
