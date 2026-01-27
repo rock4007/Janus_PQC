@@ -72,3 +72,8 @@ jobs:
 
 ## Contact
 - For questions or access, email: soumodeepguha22@gmail.com
+
+## Compliance
+- NIST PQC-aligned (ML-DSA/Dilithium via `oqs` when available); treat as experimental unless using validated modules.
+- For government use, operate only with FIPS 140-3 validated crypto modules and approved algorithms in FIPS mode.
+- SBOM and CI checks available; see [docs/COMPLIANCE.md](docs/COMPLIANCE.md) and [SECURITY_POLICY.md](SECURITY_POLICY.md).
