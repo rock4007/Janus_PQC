@@ -10,6 +10,11 @@ A hybrid-signature prototype combining classical Ed25519 with post-quantum ML-DS
 - Black-box test suite to validate success and tamper detection
 - Minimal Docker image for portable runs
 
+## Quality Gates
+- **CI checks:** `janus-pqc-tests` (unit/black-box + smoke run) and `security-and-sbom` (Bandit scan + SBOM generation + dependency audit).
+- **Artifacts:** CycloneDX `sbom.json` uploaded per run; dependency SBOM included when available.
+- **Release integrity:** Tags trigger signed SBOM and checksums attached to releases.
+
 ## Architecture
 - **Envelope:** Canonical JSON with `version`, `algo`, `ts`, `nonce`, `msg_sha256` binds signatures to the exact payload and thwarts replay.
 - **Hybrid Signatures:** Ed25519 + ML-DSA-65 (or Ed448 fallback) both sign the same envelope; verification requires both to pass.
@@ -28,6 +33,12 @@ python -m pip install -r requirements.txt
 Notes:
 - `cryptography` installs on Windows/macOS/Linux.
 - `python-oqs` (liboqs bindings) is optional and not on PyPI for Windows; use WSL/Linux and follow the official guide.
+
+## Contributing
+- Open PRs against `main` with clear scope and description.
+- **Required checks:** ensure `janus-pqc-tests` and `security-and-sbom` pass.
+- **Branch protections:** PR reviews, signed commits, linear history, and conversation resolution are enforced.
+- Follow proprietary license and Acceptable Use Policy.
 
 ## Optional: Linux/WSL with oqs
 - Follow https://github.com/open-quantum-safe/liboqs-python
@@ -69,6 +80,7 @@ jobs:
 - Both signatures must verify the same envelope or verification fails.
 - The SHA-256 digest inside the envelope ensures payload immutability.
 - Timestamp and nonce reduce replay risk; consider persistence or windowing in production.
+- **Operational hardening:** use HSM/KMS for key storage, enforce RBAC, logging, audit trails, and regular dependency audits.
 
 ## Contact
 - For questions or access, email: soumodeepguha22@gmail.com
@@ -77,6 +89,7 @@ jobs:
 - NIST PQC-aligned (ML-DSA/Dilithium via `oqs` when available); treat as experimental unless using validated modules.
 - For government use, operate only with FIPS 140-3 validated crypto modules and approved algorithms in FIPS mode.
 - SBOM and CI checks available; see [docs/COMPLIANCE.md](docs/COMPLIANCE.md) and [SECURITY_POLICY.md](SECURITY_POLICY.md).
+- Global frameworks overview in [docs/GLOBAL_COMPLIANCE.md](docs/GLOBAL_COMPLIANCE.md).
 
 ## Regional Readiness
 - EU (GDPR/NIS2), USA (FIPS 140-3/NIST/FedRAMP), Canada (PIPEDA/CyberSecure), Australia (ASD Essential Eight/ISM).
@@ -105,6 +118,8 @@ jobs:
     - `git tag -a v0.1.0 -m "Initial release"`
     - `git push origin v0.1.0`
   - The workflow in [.github/workflows/release.yml](.github/workflows/release.yml) will build and attach artifacts.
+- **Versioning:** Use semantic versioning (`MAJOR.MINOR.PATCH`).
+- **Provenance:** Signed SBOM and checksums provide supply-chain transparency.
 
 ## Real-World Validation
 - Environment: Windows 11, Python 3.14.2.
