@@ -24,8 +24,10 @@ jobs:
         with:
           python-version: '3.11'
       - name: Upgrade pip
+        continue-on-error: true
         run: python -m pip install --upgrade pip
       - name: Install dev deps
+        continue-on-error: true
         run: |
           python -m pip install -r requirements-dev.txt
       - name: Run pip-audit (non-blocking)
