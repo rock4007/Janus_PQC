@@ -28,13 +28,10 @@ jobs:
       - name: Install dev deps
         run: |
           python -m pip install -r requirements-dev.txt
-      - name: Install pip-audit
-        run: |
-          pip install pip-audit
       - name: Run pip-audit (non-blocking)
         continue-on-error: true
         run: |
-          pip-audit --progress-spinner off --format cyclonedx --output sbom_deps.json || true
+          python -m pip_audit --progress-spinner off --format cyclonedx --output sbom_deps.json || true
       - name: Bandit static analysis
         run: bandit -r . -q || true
       - name: Generate SBOM (CycloneDX JSON)
