@@ -1,0 +1,108 @@
+name: deploy
+on:
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: "Cloud provider (aws|azure|gcp)"
+        required: true
+        default: aws
+      region:
+        description: "Cloud region (e.g., us-east-1, eastus, us-central1)"
+        required: true
+        default: us-east-1
+      image_name:
+        description: "Image name/repository (e.g., janus-pqc)"
+        required: true
+        default: janus-pqc
+
+jobs:
+  aws:
+    if: ${{ github.event.inputs.provider == 'aws' }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ github.event.inputs.region }}
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Build and push image to ECR
+        env:
+          REGION: ${{ github.event.inputs.region }}
+          IMAGE: ${{ github.event.inputs.image_name }}
+          ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        run: |
+          if [ -z "$ACCOUNT_ID" ]; then echo "AWS_ACCOUNT_ID secret required" && exit 1; fi
+          ECR_URI="$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$IMAGE:latest"
+          docker build -t $IMAGE:latest .
+          docker tag $IMAGE:latest $ECR_URI
+          docker push $ECR_URI
+
+  azure:
+    if: ${{ github.event.inputs.provider == 'azure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Docker login to ACR
+        uses: azure/docker-login@v2
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+      - name: Build and push image to ACR
+        env:
+          ACR: ${{ secrets.ACR_LOGIN_SERVER }}
+          IMAGE: ${{ github.event.inputs.image_name }}
+        run: |
+          docker build -t $IMAGE:latest .
+          docker tag $IMAGE:latest $ACR/$IMAGE:latest
+          docker push $ACR/$IMAGE:latest
+
+  gcp:
+    if: ${{ github.event.inputs.provider == 'gcp' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY_JSON }}
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+      - name: Configure Docker auth for Artifact Registry
+        env:
+          REGION: ${{ github.event.inputs.region }}
+        run: |
+          gcloud auth configure-docker $REGION-docker.pkg.dev --quiet
+      - name: Build and push image to Artifact Registry
+        env:
+          REGION: ${{ github.event.inputs.region }}
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          REPO: ${{ github.event.inputs.image_name }}
+        run: |
+          if [ -z "$PROJECT_ID" ]; then echo "GCP_PROJECT_ID secret required" && exit 1; fi
+          # Ensure repo exists (non-fatal if already exists)
+          gcloud artifacts repositories create $REPO --repository-format=docker --location=$REGION --description="Janus_PQC" || true
+          IMAGE_URI="$REGION-docker.pkg.dev/$PROJECT_ID/$REPO/$REPO:latest"
+          docker build -t $REPO:latest .
+          docker tag $REPO:latest $IMAGE_URI
+          docker push $IMAGE_URI

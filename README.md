@@ -106,6 +106,14 @@ jobs:
 ## Global Deployment
 - Worldwide guidance for AWS, Azure, and GCP in [docs/DEPLOY_GLOBAL.md](docs/DEPLOY_GLOBAL.md), including US, Canada, APAC, and EU regions.
 
+## Deploy via GitHub Actions
+- Use the manual workflow in [.github/workflows/deploy.yml](.github/workflows/deploy.yml): choose `provider` (aws|azure|gcp), `region`, and `image_name`.
+- Required repository secrets:
+  - **AWS:** `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ACCOUNT_ID`.
+  - **Azure:** `AZURE_CREDENTIALS` (JSON from `az ad sp create-for-rbac`), `ACR_LOGIN_SERVER`, `ACR_USERNAME`, `ACR_PASSWORD`.
+  - **GCP:** `GCP_SA_KEY_JSON` (service account JSON), `GCP_PROJECT_ID`.
+- Triggers a build and push to your cloud registry; run in your compute service (EC2/ACI/GCE/Kubernetes) using the pushed image.
+
 ## License
 - Proprietary — All Rights Reserved. See [LICENSE](LICENSE).
 - Usage is subject to the [Acceptable Use Policy](ACCEPTABLE_USE_POLICY.md).
