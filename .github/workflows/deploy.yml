@@ -50,6 +50,8 @@ jobs:
   azure:
     if: ${{ github.event.inputs.provider == 'azure' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -77,6 +79,8 @@ jobs:
   gcp:
     if: ${{ github.event.inputs.provider == 'gcp' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
